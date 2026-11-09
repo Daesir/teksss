@@ -34,7 +34,12 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          for i in 1 2 3; do
+            ./gradlew assembleDebug --no-daemon && break
+            echo "Percobaan $i gagal, mengulang..."
+            sleep 15
+          done
+          test -f app/build/outputs/apk/debug/app-debug.apk
       - uses: actions/upload-artifact@v4
         with:
           name: sidang-nalar-apk-${{ github.run_number }}
